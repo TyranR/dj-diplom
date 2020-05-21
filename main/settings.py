@@ -28,8 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ckeditor',
-    'main',
+    'shop',
 ]
 
 MIDDLEWARE = [
@@ -42,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'car_admin.urls'
+ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
     {
@@ -60,7 +59,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'car_admin.wsgi.application'
+WSGI_APPLICATION = 'main.wsgi.application'
 
 
 # Database
@@ -111,23 +110,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+#
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+#
+# CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+# CKEDITOR_UPLOAD_PATH = "uploads/"
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         'toolbar': 'Basic',
+#     },
+# }
 
-CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
-CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'Basic',
-    },
-}
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'your secret key'
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 try:
     from .settings_local import *
