@@ -16,10 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .settings import *
-from shop.views import *
+from shop.views import CategoryView, home_view, ProductView
+import shop.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view, name='home'),
+    path('category/', CategoryView.as_view()),
+    # path('subcategory/', SubCategoryView.as_view()),
+    path('product/', ProductView.as_view()),
+    path('product/<slug:slug>', shop.views.show_product),
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

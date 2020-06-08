@@ -5,3 +5,5 @@ SECRET_KEY = 'b0e@^m&tccz11$w59qov$lhn-97!(%wfn-gray-c*x)^a$wx=2'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+# SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
