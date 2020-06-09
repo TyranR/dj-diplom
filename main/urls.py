@@ -22,9 +22,10 @@ import shop.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view, name='home'),
-    path('category/', CategoryView.as_view()),
+    path('category_serial/', CategoryView.as_view()),
+    path('product/', shop.views.category_view, name='category_view'),
     # path('subcategory/', SubCategoryView.as_view()),
-    path('product/', ProductView.as_view()),
-    path('product/<slug:slug>', shop.views.show_product),
+    path('product_serial/', ProductView.as_view()),
+    path('product/<slug:slug>', shop.views.show_product, name='show_product')
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

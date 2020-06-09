@@ -39,9 +39,9 @@
 ## Дизайн
 
 * [Главная страница](templates/shop/index.html).
-* [Страница раздела](templates/shop/smartphones.html).
+* [Страница раздела](templates/shop/categorys.html).
 * [Страница незаполненного раздела](templates/shop/empty_section.html).
-* [Страница товара](templates/shop/phone.html).
+* [Страница товара](templates/shop/product.html).
 * [Страница корзины](templates/shop/cart.html).
 * [Страница входа](templates/shop/login.html).
 
@@ -61,7 +61,7 @@
 
 ## Дополнительные задачи
 
-* Реализовать механизм анонимных отзывов как показано на макете [Страница товара](templates/shop/phone.html).
+* Реализовать механизм анонимных отзывов как показано на макете [Страница товара](templates/shop/product.html).
 * Реализовать возможность регистрации по почте (без подтверждения почты).
 
 ---

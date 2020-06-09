@@ -65,13 +65,22 @@
 
   <div class="container mt-3">
     <!-- Example row of columns -->
+
+    {% for each in product %}
     <div class="row">
       <div class="col-md-12">
-        <h2>Nexus 5x</h2>
+        <h2>{{ each.model }}</h2>
 
-        <img src="/static/nexus5x.webp" width="120">
+        <img src="{{ each.image }}" width="120">
 
-        <p>Неплохой телефон</p>
+        {% if review.rating == 1 %}   <p>Ужасный телефон</p>
+        {% elif review.rating == 2 %} <p>Плохой телефон</p>
+        {% elif review.rating == 3 %} <p>Неплохой телефон</p>
+        {% elif review.rating == 4 %} <p>Хороший телефон</p>
+        {% elif review.rating == 5 %} <p>Отличный телефон</p>
+        {% else %} <p>Непонятный телефон</p>
+        {% endif %}
+
         <form method="post" action="/cart/">
           <input type="hidden" name="csrfmiddlewaretoken"
                  value="N4vcBqzjoYkU7OTDuAT8hq8srpvYX44nJsswuP7e3EYg0Hq8DgxuR0eiXWbSr5RZ">
@@ -81,26 +90,37 @@
       </div>
     </div>
     <hr>
+    {% endfor %}
 
-    ★★★★★ <span>Вася</span>
-    <p> Хороший отзыв</p>
+    {% for review in reviews %}
+      {% if review.mark == 1 %} ★ <span>Вася</span>
+      {% elif review.mark == 2 %} ★★ <span>Вася</span>
+      {% elif review.mark == 3 %} ★★★ <span>Вася</span>
+      {% elif review.mark == 4 %} ★★★★ <span>Вася</span>
+      {% elif review.mark == 5 %} ★★★★★ <span>Вася</span>
+      {% else %} <span>Вася</span>
+      {% endif %}
+      <p>{{review.description}}</p>
+    {% empty %}
+      <p>Отзывов ещё нет</p>
+    {% endfor %}
 
-    ★★ <span>Петя</span>
-    <p> Плохой отзыв</p>
 
     <hr>
 
     <div class="row">
       <div class="col-lg-6 col-md-8 col-sm-12">
-        <h4>Оставте отзыв:</h4>
+        <h4>Оставьте отзыв:</h4>
 
         <form action="/merch/1/feedback" method="post">
+          {% csrf_token %}
+          {{ form }}
           <input type="hidden" name="csrfmiddlewaretoken"
                  value="N4vcBqzjoYkU7OTDuAT8hq8srpvYX44nJsswuP7e3EYg0Hq8DgxuR0eiXWbSr5RZ">
           <div class="form-group">
             <label for="name">Имя</label>
             <input type="text" class="form-control" id="name" aria-describedby="nameHelp"
-                   placeholder="Представтесь" name="name" data-cip-id="name">
+                   placeholder="Представьтесь" name="name" data-cip-id="name">
           </div>
           <div class="form-group">
             <label for="content">Содержание</label>

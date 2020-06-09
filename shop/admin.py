@@ -2,13 +2,13 @@ from django.contrib import admin
 
 # from .models import Car, Review
 # from .forms import ReviewAdminForm
-from shop.models import Category, Product, Article, SubCategory
+from shop.models import Category, Product, Article, SubCategory, Review
 from .forms import ProductAdminForm
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'slug')
     list_filter = ('name',)
     search_fields = ('name',)
     ordering = ('id',)
@@ -16,7 +16,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(SubCategory)
 class SubCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category')
+    list_display = ('name', 'category', 'slug')
     list_filter = ('name', 'category')
     search_fields = ('name', 'category')
     ordering = ('id',)
@@ -24,9 +24,9 @@ class SubCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('model', 'price', 'category', 'subcategory', 'article', 'slug')
-    list_filter = ('model', 'price', 'category', 'subcategory', 'article')
-    search_fields = ('model', 'price', 'category', 'subcategory', 'article')
+    list_display = ('id', 'model', 'price', 'category', 'subcategory', 'article', 'slug','rating')
+    list_filter = ('model', 'price', 'category', 'subcategory', 'article','rating')
+    search_fields = ('model', 'price', 'category', 'subcategory', 'article','rating')
     form = ProductAdminForm
 
 
@@ -35,3 +35,10 @@ class ArticleAdmin(admin.ModelAdmin):
     list_display = ('name',)
     list_filter = ('name',)
     search_fields = ('name',)
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('id', 'description','mark', 'product', 'name')
+    list_filter = ('mark', 'product', 'name')
+    search_fields = ('mark', 'product', 'name')
