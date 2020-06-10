@@ -26,25 +26,21 @@
           Главная</a>
       </li>
 
-
+      {% for category in categorys %}
       <li class="nav-item active dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="dropdown01"
+        <a class="nav-link dropdown-toggle" href="{{ category.slug }}" id="dropdown01"
            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Гаджеты</a>
+          {{ category.name }}</a>
         <div class="dropdown-menu" aria-labelledby="dropdown01">
-
-          <a class="dropdown-item" href="./smartphones.html">
-            Сматрфоны</a>
-
+          {% for subcategory in subcategorys %}
+            {% if subcategory.category.name == category.name %}
+              <a class="dropdown-item" href="{{ subcategory.slug }}">
+                {{ subcategory.name }}</a>
+            {% endif %}
+          {% endfor %}
         </div>
       </li>
-
-
-      <li class="nav-item">
-        <a class="nav-link" href="./empty_section.html">
-          Аксесcуары</a>
-      </li>
-
+      {% endfor %}
 
     </ul>
     <a class="btn btn-outline-success my-2 my-sm-0" role="button"
@@ -73,7 +69,7 @@
       <div class="col-md-4">
         <h2>{{ each.model }}</h2>
 
-        <a href="{{ each.slug }}">
+        <a href="/product/{{ each.slug }}">
 
           <img src="{{ each.image }}" width="180">
 

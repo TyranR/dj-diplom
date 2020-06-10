@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from shop.models import Category, Product, Review
+from shop.models import Category, Product, Review, SubCategory, Article
 from shop.serializers import CategorySerializer, ProductSerializer
 from django.core.paginator import Paginator
 
@@ -50,8 +50,34 @@ class ProductView(APIView):
 
 def home_view(request):
     template_name = 'shop/index.html'
-    context = {}
+    all_products = Product.objects.all()
+    all_category = Category.objects.all()
+    all_subcategory = SubCategory.objects.all()
+    all_articles = Article.objects.all()
+    paginator = Paginator(Product.objects.all(), 3)
+    current_page = request.GET.get('page', 1)
+    things = paginator.get_page(current_page)
+    prev_page_number = next_page_number = 0
+    if things.has_previous():
+        prev_page_number = int(current_page) - 1
+    if things.has_next():
+        next_page_number = int(current_page) + 1
+    prev_page_url = urllib.parse.urlencode({'page': prev_page_number})
+    next_page_url = urllib.parse.urlencode({'page': next_page_number})
+    prev_page_url = str(prev_page_url)
+    next_page_url = str(next_page_url)
+    context = {
+        'products': things,
+        'all_products': all_products,
+        'categorys': all_category,
+        'articles': all_articles,
+        'subcategorys': all_subcategory,
+        'current_page': current_page,
+        'prev_page_url': prev_page_url,
+        'next_page_url': next_page_url
+    }
     return render(request, template_name, context)
+
 
 
 def show_product(request, slug):
@@ -67,44 +93,15 @@ def show_product(request, slug):
     return render(request, template, context)
 
 
-# def product_view(request, pk):
-#     template = 'app/product_detail.html'
-#     product = get_object_or_404(Product, id=pk)
-#     form = ReviewForm
-#     key_exists = 'reviewed_products' in request.session
-#     if not key_exists:
-#         request.session['reviewed_products'] = []
-#         reviewed_products = []
-#     else:
-#         reviewed_products = request.session['reviewed_products']
-#     if request.method == 'GET':
-#         if not pk in reviewed_products:
-#             is_review_exist = 0
-#         else:
-#             is_review_exist = 1
-#     if request.method == 'POST':
-#         if not pk in reviewed_products:
-#             text = request.POST.get('text')
-#             new_review = Review.objects.create(text=text, product=product)
-#             reviewed_products.append(pk)
-#             request.session['reviewed_products'] = reviewed_products
-#             is_review_exist = 0
-#         else:
-#             is_review_exist = 1
-#     all_review = Review.objects.filter(product__id=pk)
-#     print(request.session['reviewed_products'])
-#     context = {
-#         'form': form,
-#         'product': product,
-#         'reviews': all_review,
-#         'is_review_exist': is_review_exist
-#     }
-#
-#     return render(request, template, context)
-
-
-def category_view(request):
-    template = 'shop/categorys.html'
+def products(request, slug):
+    template = 'shop/products_new.html'
+    all_category = Category.objects.all()
+    all_subcategory = SubCategory.objects.all()
+    click_subcategory = SubCategory.objects.filter(slug=slug)
+    for each in click_subcategory:
+        product_name = each.id
+        current_subcategory = each.name
+    click_product = Product.objects.filter(subcategory=product_name)
     paginator = Paginator(Product.objects.all(), 2)
     current_page = request.GET.get('page', 1)
     articles = paginator.get_page(current_page)
@@ -115,11 +112,31 @@ def category_view(request):
         next_page_number = int(current_page)+1
     prev_page_url = urllib.parse.urlencode({'page' : prev_page_number})
     next_page_url = urllib.parse.urlencode({'page': next_page_number})
-    prev_page_url = reverse('category_view') + '?' + str(prev_page_url)
-    next_page_url = reverse('category_view') + '?' + str(next_page_url)
+    prev_page_url = slug + '?' + str(prev_page_url)
+    next_page_url = slug + '?' + str(next_page_url)
     return render(request, template, context={
-        'products': articles,
+        'products': click_product,
+        'categorys': all_category,
+        'subcategorys': all_subcategory,
+        'current': current_subcategory,
         'current_page': current_page,
         'prev_page_url': prev_page_url,
         'next_page_url': next_page_url,
     })
+
+
+def login_view(request):
+    template = 'shop/login.html'
+    context = {}
+    if request.user.is_authenticated:
+        pass
+    else:
+        pass
+    return render(request, template, context)
+
+
+def cart_view(request):
+    template = 'shop/cart.html'
+    context = {}
+    return render(request, template, context)
+

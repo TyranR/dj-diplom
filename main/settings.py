@@ -114,19 +114,8 @@ STATIC_URL = '/static/'
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'shop')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'shop', 'static'),]
-
-#
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
-#
-# CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
-# CKEDITOR_UPLOAD_PATH = "uploads/"
-# CKEDITOR_CONFIGS = {
-#     'default': {
-#         'toolbar': 'Basic',
-#     },
-# }
-
+AUTH_USER_MODEL = 'shop.User'
+LOGIN_REDIRECT_URL = '/'
 
 try:
     from .settings_local import *

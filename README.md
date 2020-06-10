@@ -39,7 +39,7 @@
 ## Дизайн
 
 * [Главная страница](templates/shop/index.html).
-* [Страница раздела](templates/shop/categorys.html).
+* [Страница раздела](templates/shop/products.html).
 * [Страница незаполненного раздела](templates/shop/empty_section.html).
 * [Страница товара](templates/shop/product.html).
 * [Страница корзины](templates/shop/cart.html).

@@ -13,19 +13,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.views import LoginView
 from django.urls import path, include
 from .settings import *
-from shop.views import CategoryView, home_view, ProductView
+from shop.views import *
 import shop.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home_view, name='home'),
+    path('', shop.views.home_view, name='home'),
+    path('index.html', shop.views.home_view, name='home2'),
     path('category_serial/', CategoryView.as_view()),
-    path('product/', shop.views.category_view, name='category_view'),
+    path('products/<slug:slug>', shop.views.products, name='products'),
+    # path('products/', shop.views.products, name='products'),
     # path('subcategory/', SubCategoryView.as_view()),
     path('product_serial/', ProductView.as_view()),
-    path('product/<slug:slug>', shop.views.show_product, name='show_product')
+    path('product/<slug:slug>', shop.views.show_product, name='show_product'),
+    path('login.html', shop.views.login_view, name='login'),
+    path('cart.html', shop.views.cart_view, name='cart'),
+    path('login/', LoginView.as_view(), name='login2'),
+    # url(r'^accounts/', include('django.contrib.auth.urls'))
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 # from django.utils.text import slugify
 from pytils.translit import slugify
@@ -64,7 +65,8 @@ class Product(models.Model):
     price = models.PositiveIntegerField(verbose_name='Стоимость')
     image = models.CharField(verbose_name='Картинка', max_length=128, blank=True)
     category = models.ForeignKey(Category, verbose_name='Категория', on_delete=models.CASCADE, blank=True, null=True)
-    subcategory = models.ForeignKey(SubCategory, verbose_name='Подкатегория', on_delete=models.CASCADE, blank=True, null=True)
+    subcategory = models.ForeignKey(SubCategory, verbose_name='Подкатегория', on_delete=models.CASCADE, blank=True,
+                                    null=True)
     article = models.ForeignKey(Article, verbose_name='Статья', on_delete=models.CASCADE, blank=True, null=True)
     slug = models.SlugField(verbose_name='Slugify URL', max_length=10, unique=True)
     rating = models.IntegerField(verbose_name='Рейтинг', blank=True, null=True)
@@ -79,7 +81,6 @@ class Product(models.Model):
         self.slug = self.sluggg()
         super().save(*args, **kwargs)
 
-
     class Meta:
         verbose_name = 'Товар'
         verbose_name_plural = 'Товары'
@@ -87,9 +88,9 @@ class Product(models.Model):
 
 class Review(models.Model):
     objects = models.Manager()
-    name =  models.CharField(verbose_name='Имя', max_length=20, blank=True, null=True)
+    name = models.CharField(verbose_name='Имя', max_length=20, blank=True, null=True)
     description = models.TextField(verbose_name='Содержание', )
-    mark = models.IntegerField(verbose_name='Оценка',)
+    mark = models.IntegerField(verbose_name='Оценка', )
     product = models.ForeignKey(Product, verbose_name='Продукт', on_delete=models.CASCADE, blank=True, null=True)
 
     def __str__(self):
@@ -98,3 +99,7 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+
+
+class User(AbstractUser):
+    pass

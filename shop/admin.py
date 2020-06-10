@@ -1,8 +1,6 @@
 from django.contrib import admin
 
-# from .models import Car, Review
-# from .forms import ReviewAdminForm
-from shop.models import Category, Product, Article, SubCategory, Review
+from shop.models import Category, Product, Article, SubCategory, Review, AbstractUser, User
 from .forms import ProductAdminForm
 
 
@@ -42,3 +40,8 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('id', 'description','mark', 'product', 'name')
     list_filter = ('mark', 'product', 'name')
     search_fields = ('mark', 'product', 'name')
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    pass
