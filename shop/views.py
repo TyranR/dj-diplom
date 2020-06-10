@@ -82,13 +82,17 @@ def home_view(request):
 
 def show_product(request, slug):
     template = 'shop/product.html'
+    all_category = Category.objects.all()
+    all_subcategory = SubCategory.objects.all()
     all_entries = Product.objects.filter(slug=slug)
     for each in all_entries:
         model_product = each.id
     all_reviews = Review.objects.filter(product=model_product)
     context = {
         'product': all_entries,
-        'reviews': all_reviews
+        'reviews': all_reviews,
+        'categorys': all_category,
+        'subcategorys': all_subcategory
     }
     return render(request, template, context)
 
