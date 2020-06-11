@@ -3,6 +3,8 @@ from django.db import models
 # from django.utils.text import slugify
 from pytils.translit import slugify
 
+from shop.managers import MyUserManager
+
 
 class Category(models.Model):
     objects = models.Manager()
@@ -102,4 +104,37 @@ class Review(models.Model):
 
 
 class User(AbstractUser):
-    pass
+    username = None
+    email = models.EmailField(verbose_name='Email', max_length=255, unique=True)
+    is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.email
+
+    objects = MyUserManager()
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete = models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name='Товар', on_delete = models.CASCADE)
+    pr_count = models.IntegerField()
+
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete = models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name='Товар', on_delete = models.CASCADE)
+    pr_count = models.IntegerField(verbose_name='Количество')
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+    def __str__(self):
+        return 'account_' + self.user.email + '__product_' + self.product.model + '_' + str(self.pr_count) + '_pcs'

@@ -1,6 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
-from shop.models import Category, Product, Article, SubCategory, Review, AbstractUser, User
+from shop.models import Category, Product, Article, SubCategory, Review, AbstractUser, User, Cart, Order
 from .forms import ProductAdminForm
 
 
@@ -22,9 +23,9 @@ class SubCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'model', 'price', 'category', 'subcategory', 'article', 'slug','rating')
-    list_filter = ('model', 'price', 'category', 'subcategory', 'article','rating')
-    search_fields = ('model', 'price', 'category', 'subcategory', 'article','rating')
+    list_display = ('id', 'model', 'price', 'category', 'subcategory', 'article', 'slug', 'rating')
+    list_filter = ('model', 'price', 'category', 'subcategory', 'article', 'rating')
+    search_fields = ('model', 'price', 'category', 'subcategory', 'article', 'rating')
     form = ProductAdminForm
 
 
@@ -37,11 +38,23 @@ class ArticleAdmin(admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('id', 'description','mark', 'product', 'name')
+    list_display = ('id', 'description', 'mark', 'product', 'name')
     list_filter = ('mark', 'product', 'name')
     search_fields = ('mark', 'product', 'name')
 
 
-@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     pass
+
+
+admin.site.register(User, UserAdmin)
+
+
+@admin.register(Cart)
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'product', 'pr_count')
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'product', 'pr_count')

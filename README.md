@@ -43,7 +43,7 @@
 * [Страница незаполненного раздела](templates/shop/empty_section.html).
 * [Страница товара](templates/shop/product.html).
 * [Страница корзины](templates/shop/cart.html).
-* [Страница входа](templates/shop/login.html).
+* [Страница входа](templates/registration/login.html).
 
 ## Требования к организации системы
 

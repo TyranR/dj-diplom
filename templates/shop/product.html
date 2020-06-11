@@ -22,7 +22,7 @@
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="./">
+        <a class="nav-link" href="/index.html">
           Главная <span class="sr-only">(current)</span></a>
       </li>
 
@@ -48,9 +48,15 @@
       Корзина</a>
 
 
+    {% if request.user.is_authenticated %}
     <a class="btn btn-outline-success my-2 my-sm-0" role="button"
-       href="./logout/">
-      Выйти</a>
+       href="/login/">
+      {{ request.user }} Выйти</a>
+    {% else %}
+        <a class="btn btn-outline-success my-2 my-sm-0" role="button"
+       href="/login/">
+      Войти</a>
+    {% endif %}
 
   </div>
 </nav>
@@ -84,6 +90,8 @@
           <input type="hidden" name="merchandise_id" value="1">
           <input type="submit" class="btn btn-secondary" value="Добавить в корзину »">
         </form>
+        {% else %}
+        <a class="btn btn-outline-success my-2 my-sm-0" role="button" href="/login/"> Авторизуйся </a>
         {% endif %}
       </div>
     </div>

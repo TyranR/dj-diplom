@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, include
 from .settings import *
 from shop.views import *
@@ -34,6 +34,7 @@ urlpatterns = [
     path('login.html', shop.views.login_view, name='login'),
     path('cart.html', shop.views.cart_view, name='cart'),
     path('login/', LoginView.as_view(), name='login2'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     # url(r'^accounts/', include('django.contrib.auth.urls'))
 ]
 # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

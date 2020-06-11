@@ -53,7 +53,7 @@ def home_view(request):
     all_products = Product.objects.all()
     all_category = Category.objects.all()
     all_subcategory = SubCategory.objects.all()
-    all_articles = Article.objects.all()
+    all_articles = Article.objects.all().order_by('-id')
     paginator = Paginator(Product.objects.all(), 3)
     current_page = request.GET.get('page', 1)
     things = paginator.get_page(current_page)
