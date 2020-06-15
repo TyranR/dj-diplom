@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from shop.models import Category, Product, Review, SubCategory, Article
+from shop.models import Category, Product, Review, SubCategory, Article, User, Cart, Order
 from shop.serializers import CategorySerializer, ProductSerializer
 from django.core.paginator import Paginator
 
@@ -49,7 +49,7 @@ class ProductView(APIView):
 
 
 def home_view(request):
-    template_name = 'shop/index.html'
+    template = 'shop/index.html'
     all_products = Product.objects.all()
     all_category = Category.objects.all()
     all_subcategory = SubCategory.objects.all()
@@ -66,7 +66,16 @@ def home_view(request):
     next_page_url = urllib.parse.urlencode({'page': next_page_number})
     prev_page_url = str(prev_page_url)
     next_page_url = str(next_page_url)
-    context = {
+    if request.method == 'POST' and request.user.is_authenticated:
+        product = get_object_or_404(Product)
+        acc = User.objects.get(email=request.user.email)
+        if Cart.objects.all().filter(user=acc, product=product).exists():
+            cart = Cart.objects.get(user=acc, product=product)
+            Cart.objects.all().filter(user=acc, product=product).update(pr_count=cart.pr_count + 1)
+        else:
+            new_cart = Cart(user=acc, product=product, pr_count=1)
+            new_cart.save()
+    return render(request, template, context={
         'products': things,
         'all_products': all_products,
         'categorys': all_category,
@@ -75,9 +84,7 @@ def home_view(request):
         'current_page': current_page,
         'prev_page_url': prev_page_url,
         'next_page_url': next_page_url
-    }
-    return render(request, template_name, context)
-
+    })
 
 
 def show_product(request, slug):
@@ -88,13 +95,21 @@ def show_product(request, slug):
     for each in all_entries:
         model_product = each.id
     all_reviews = Review.objects.filter(product=model_product)
-    context = {
+    if request.method == 'POST' and request.user.is_authenticated:
+        product = get_object_or_404(Product, slug=slug)
+        acc = User.objects.get(email=request.user.email)
+        if Cart.objects.all().filter(user=acc, product=product).exists():
+            cart = Cart.objects.get(user=acc, product=product)
+            Cart.objects.all().filter(user=acc, product=product).update(pr_count=cart.pr_count + 1)
+        else:
+            new_cart = Cart(user=acc, product=product, pr_count=1)
+            new_cart.save()
+    return render(request, template, context={
         'product': all_entries,
         'reviews': all_reviews,
         'categorys': all_category,
         'subcategorys': all_subcategory
-    }
-    return render(request, template, context)
+    })
 
 
 def products(request, slug):
@@ -118,6 +133,16 @@ def products(request, slug):
     next_page_url = urllib.parse.urlencode({'page': next_page_number})
     prev_page_url = slug + '?' + str(prev_page_url)
     next_page_url = slug + '?' + str(next_page_url)
+    if request.method == 'POST' and request.user.is_authenticated:
+        product = get_object_or_404(Product, slug=slug)
+        acc = User.objects.get(email=request.user.email)
+        if Cart.objects.all().filter(user=acc, product=product).exists():
+            cart = Cart.objects.get(user=acc, product=product)
+            Cart.objects.all().filter(user=acc, product=product).update(pr_count=cart.pr_count + 1)
+        else:
+            new_cart = Cart(user=acc, product=product, pr_count=1)
+            new_cart.save()
+
     return render(request, template, context={
         'products': click_product,
         'categorys': all_category,
@@ -129,18 +154,41 @@ def products(request, slug):
     })
 
 
-def login_view(request):
-    template = 'shop/login.html'
-    context = {}
-    if request.user.is_authenticated:
-        pass
-    else:
-        pass
-    return render(request, template, context)
-
-
 def cart_view(request):
     template = 'shop/cart.html'
+    all_category = Category.objects.all()
+    all_subcategory = SubCategory.objects.all()
+    no_product = True
+    if request.user.is_authenticated:
+        name = request.user.email
+        user_acc = User.objects.get(email=name)
+        obj_cart = Cart.objects.all().filter(user=user_acc)
+        obj_count_int = obj_cart.count()
+        if obj_cart.exists():
+            no_product = False
+    else:
+        obj_cart = None
+        obj_count_int = None
+    print(obj_count_int,obj_cart,no_product)
+    return render(request, template, context={
+        'objects': obj_cart,
+        'obj_count_int': obj_count_int,
+        'no_product': no_product,
+        'categorys': all_category,
+        'subcategorys': all_subcategory
+    })
+
+
+def cart_clean(request):
+    template = 'shop/cart_clean.html'
+    if request.user.is_authenticated:
+        name = request.user.email
+        acc = User.objects.get(email=name)
+        cart_objects = Cart.objects.all().filter(user=acc)
+        for obj in cart_objects:
+            order = Order(user=obj.user, product=obj.product, pr_count=obj.pr_count)
+            order.save()
+        Cart.objects.all().filter(user=acc).delete()
     context = {}
     return render(request, template, context)
 

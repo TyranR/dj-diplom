@@ -27,13 +27,11 @@ urlpatterns = [
     path('index.html', shop.views.home_view, name='home2'),
     path('category_serial/', CategoryView.as_view()),
     path('products/<slug:slug>', shop.views.products, name='products'),
-    # path('products/', shop.views.products, name='products'),
-    # path('subcategory/', SubCategoryView.as_view()),
     path('product_serial/', ProductView.as_view()),
     path('product/<slug:slug>', shop.views.show_product, name='show_product'),
-    path('login.html', shop.views.login_view, name='login'),
-    path('cart.html', shop.views.cart_view, name='cart'),
-    path('login/', LoginView.as_view(), name='login2'),
+    path('cart/', shop.views.cart_view, name='cart'),
+    path('sucess_payed/', shop.views.cart_clean, name='cart_clean'),
+    path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     # url(r'^accounts/', include('django.contrib.auth.urls'))
 ]
