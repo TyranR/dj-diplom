@@ -131,6 +131,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, verbose_name='Пользователь', on_delete = models.CASCADE)
     product = models.ForeignKey(Product, verbose_name='Товар', on_delete = models.CASCADE)
     pr_count = models.IntegerField(verbose_name='Количество')
+    number = models.IntegerField(verbose_name='Номер заказа')
 
     class Meta:
         verbose_name = 'Заказ'

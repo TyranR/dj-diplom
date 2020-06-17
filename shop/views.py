@@ -1,3 +1,4 @@
+import time
 import urllib
 from pprint import pprint
 
@@ -182,13 +183,13 @@ def cart_view(request):
 def cart_clean(request):
     template = 'shop/cart_clean.html'
     if request.user.is_authenticated:
+        number = time.time_ns()
         name = request.user.email
         acc = User.objects.get(email=name)
         cart_objects = Cart.objects.all().filter(user=acc)
         for obj in cart_objects:
-            order = Order(user=obj.user, product=obj.product, pr_count=obj.pr_count)
+            order = Order(user=obj.user, product=obj.product, pr_count=obj.pr_count, number=number)
             order.save()
         Cart.objects.all().filter(user=acc).delete()
-    context = {}
-    return render(request, template, context)
+    return render(request, template, context ={})
 

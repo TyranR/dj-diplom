@@ -116,9 +116,8 @@
       <div class="col-lg-6 col-md-8 col-sm-12">
         <h4>Оставьте отзыв:</h4>
 
-        <form action="/merch/1/feedback" method="post">
+        <form method="post">
           {% csrf_token %}
-          {{ form }}
           <input type="hidden" name="csrfmiddlewaretoken"
                  value="N4vcBqzjoYkU7OTDuAT8hq8srpvYX44nJsswuP7e3EYg0Hq8DgxuR0eiXWbSr5RZ">
           <div class="form-group">
@@ -166,7 +165,6 @@
               5
             </label>
           </div>
-
           <button type="submit" class="btn btn-primary">Оставить</button>
         </form>
       </div>

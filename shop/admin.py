@@ -57,4 +57,4 @@ class CartAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'product', 'pr_count')
+    list_display = ('id', 'user', 'number', 'product', 'pr_count')
